@@ -10,7 +10,7 @@ set /p LICENSE_CODE=Nhap ma ban quyen (5 so):
 if "%LICENSE_CODE%"=="" goto LICENSE_PROMPT
 
 echo Dang kiem tra ban quyen...
-python validate_license.py %LICENSE_CODE%
+validate_license.exe %LICENSE_CODE%
 
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Ma ban quyen KHONG hop le! Vui long kiem tra lai.
@@ -27,7 +27,7 @@ echo ===================================================
 
 echo.
 echo Goi script cau hinh ma hoa...
-python configure.py
+configure.exe
 
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Cau hinh that bai!
