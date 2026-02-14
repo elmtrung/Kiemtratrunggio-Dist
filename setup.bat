@@ -2,27 +2,41 @@
 @echo off
 setlocal
 echo ===================================================
+echo   KIEM TRA BAN QUYEN (License Check)
+echo ===================================================
+
+:LICENSE_PROMPT
+set /p LICENSE_CODE=Nhap ma ban quyen (5 so): 
+if "%LICENSE_CODE%"=="" goto LICENSE_PROMPT
+
+echo Dang kiem tra ban quyen...
+python validate_license.py %LICENSE_CODE%
+
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Ma ban quyen KHONG hop le! Vui long kiem tra lai.
+    echo.
+    goto LICENSE_PROMPT
+)
+
+echo [OK] Ban quyen hop le! Tiep tuc cai dat...
+echo.
+
+echo ===================================================
 echo   CAU HINH DATABASE CHO KiemTraTrungGio
 echo ===================================================
 
-set /p DB_SERVER=Nhap ten Server (VD: localhost, 192.168.1.10): 
-set /p DB_NAME=Nhap ten Database (VD: HIS_MISA): 
-set /p DB_USER=Nhap User DB (VD: sa): 
-set /p DB_PASSWORD=Nhap Password DB: 
+echo.
+echo Goi script cau hinh ma hoa...
+python configure.py
+
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Cau hinh that bai!
+    pause
+    exit /b %ERRORLEVEL%
+)
 
 echo.
-echo Dang luu cau hinh vao file .env...
-(
-echo DB_SERVER=%DB_SERVER%
-echo DB_NAME=%DB_NAME%
-echo DB_USER=%DB_USER%
-echo DB_PASSWORD=%DB_PASSWORD%
-echo APP_HOST=0.0.0.0
-echo APP_PORT=5000
-echo APP_DEBUG=False
-) > .env
-
-echo.
-echo [OK] Da luu cau hinh thanh cong!
+echo [OK] Da cau hinh thanh cong (File config.enc da duoc tao)!
 echo Ban co the chay KiemTraTrungGio.exe ngay bay gio.
 pause
+
